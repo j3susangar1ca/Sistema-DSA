@@ -1,12 +1,52 @@
 [package]
 name = "sistema-dsa"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
+authors = ["Lead Systems Architect <dsa@hcg.gob.mx>"]
+description = "Sistema Híbrido de Adjudicación de Compras — Edge Agent Mission-Critical v2.0"
+license = "Proprietary"
+rust-version = "1.78"
 
 [dependencies]
-tokio = { version = "1", features = ["full"] }
+# Async runtime — Tokio con full features para I/O, timers y tasks
+tokio = { version = "1.37", features = ["full"] }
+
+# Serialización / Deserialización estructurada
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-reqwest = { version = "0.11", features = ["json"] }
-rusqlite = "0.31"
+
+# HTTP client con redirección 302 transparente y pooling de conexiones
+reqwest = { version = "0.12", features = ["json"] }
+
+# Base de datos transaccional local — Write-Ahead Log (WAL)
+rusqlite = { version = "0.31", features = ["bundled", "chrono", "serde_json"] }
+
+# Fechas y timestamps — NaiveDate sin timezone implícita (normativa ISO)
 chrono = { version = "0.4", features = ["serde"] }
+
+# Logging estructurado production-grade con spans (observabilidad)
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["json", "env-filter"] }
+
+# Errores type-safe y contextualización
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Generación estocástica de jitter (Backoff exponencial)
+rand = "0.8"
+
+# Escritura atómica de Excel transactive store (.xlsx)
+rust_xlsxwriter = "0.64"
+
+# Carga de variables de entorno sin modificar el host
+dotenvy = "0.15"
+
+# Validación estricta de URLs del Control Plane
+url = "2.5"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
