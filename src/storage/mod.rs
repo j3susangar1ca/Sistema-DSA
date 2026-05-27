@@ -9,7 +9,7 @@
 //! Garantiza: cero pérdida de datos ante caídas de red, consistencia eventual
 //! perfecta, y recuperación atómica mediante `BEGIN IMMEDIATE`.
 
-use anyhow::{Context, Result};
+use anyhow::Result;
 use rusqlite::{Connection, TransactionBehavior};
 use std::path::{Path, PathBuf};
 use tokio::task;
@@ -222,14 +222,14 @@ impl SQLiteManager {
     /// La closure recibe una `rusqlite::Connection` mutable.
     pub async fn execute<F, T>(&self, operation: F) -> Result<T, StorageError>
     where
-        F: FnOnce(&mut Connection) -> Result<T, rusqlite::Error> + Send + 'static,
+        F: FnOnce(&rusqlite::Transaction) -> Result<T, rusqlite::Error> + Send + 'static,
         T: Send + 'static,
     {
         let path = self.db_path.clone();
         task::spawn_blocking(move || {
             let mut conn = Connection::open(&path)?;
-            let mut tx = conn.transaction_with_behavior(TransactionBehavior::Immediate)?;
-            let result = operation(&mut tx)?;
+            let tx = conn.transaction_with_behavior(TransactionBehavior::Immediate)?;
+            let result = operation(&tx)?;
             tx.commit()?;
             Ok(result)
         })

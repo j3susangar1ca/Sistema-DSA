@@ -21,7 +21,7 @@ use std::fmt;
 /// En Rust se conserva PascalCase por idioma del lenguaje.
 /// En SQL/JSON se serializa como `UPPER_SNAKE_CASE` ([ID-REQ-LEDGER-02]).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "UPPER_SNAKE_CASE")]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum EstatusTramite {
     Cotizacion,
     RecursosFinancieros,
@@ -88,33 +88,33 @@ pub struct FondoRevolventeLedger {
 
     // ─── Bloque 2: Control y Operación Interna ───
     pub usuario_asignado: String,
-    pub fecha_inicio_cotizacion: Option<<NaiveDate>,
+    pub fecha_inicio_cotizacion: Option<NaiveDate>,
     pub estatus_tramite: EstatusTramite,
     pub observaciones: Option<String>,
 
     // ─── Bloque 3: Validación Presupuestal e Institucional (Hito SUPRE + CAA) ───
     pub folio_supre: Option<String>,
-    pub fecha_supre: Option<<NaiveDate>,
+    pub fecha_supre: Option<NaiveDate>,
     pub paquete_envio_caa: Option<i64>,
-    pub fecha_recibido_caa: Option<<NaiveDate>,
-    pub fecha_autorizacion_caa: Option<<NaiveDate>,
+    pub fecha_recibido_caa: Option<NaiveDate>,
+    pub fecha_autorizacion_caa: Option<NaiveDate>,
     pub folio_autorizacion_caa: Option<String>,
 
     // ─── Bloque 4: Adjudicación e Importes Financieros (Hito Pedido) ───
-    pub financieros: Option<<FinancieroSnapshot>,
+    pub financieros: Option<FinancieroSnapshot>,
     pub cantidad_pedido: Option<f64>,
     pub numero_pedido: Option<String>,
-    pub fecha_pedido: Option<<NaiveDate>,
+    pub fecha_pedido: Option<NaiveDate>,
     pub proveedor_rfc: Option<String>,
 
     // ─── Bloque 5: Logística y Cierre Fiscal (Hito Pasivo/Pago) ───
     pub estatus_entrega: Option<String>,
-    pub fecha_entrega_almacen: Option<<NaiveDate>,
+    pub fecha_entrega_almacen: Option<NaiveDate>,
     pub numero_factura: Option<String>,
-    pub fecha_factura: Option<<NaiveDate>,
-    pub fecha_envio_xml_rf: Option<<NaiveDate>,
-    pub fecha_pago: Option<<NaiveDate>,
-    pub fecha_complemento_pago_rf: Option<<NaiveDate>,
+    pub fecha_factura: Option<NaiveDate>,
+    pub fecha_envio_xml_rf: Option<NaiveDate>,
+    pub fecha_pago: Option<NaiveDate>,
+    pub fecha_complemento_pago_rf: Option<NaiveDate>,
 
     // ─── Metadatos de Auditoría Transversal ───
     pub created_at: DateTime<Utc>,
@@ -195,7 +195,7 @@ impl FondoRevolventeLedger {
 
 /// Estado de ejecución de un comando en la cola inversa.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "UPPER_SNAKE_CASE")]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum CommandStatus {
     Pending,
     InProgress,
@@ -216,7 +216,7 @@ impl fmt::Display for CommandStatus {
 
 /// Estado de sincronización de un registro hacia BigQuery.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "UPPER_SNAKE_CASE")]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum SyncStatus {
     Pending,
     Uploading,
@@ -250,7 +250,7 @@ pub struct CommandMessage {
     #[serde(default)]
     pub payload: serde_json::Value,
     #[serde(default)]
-    pub response_payload: Option<<serde_json::Value>,
+    pub response_payload: Option<serde_json::Value>,
     pub completed_at: Option<DateTime<Utc>>,
 }
 
