@@ -1,5 +1,3 @@
-mkdir -p src
-cat <<EOF > src/main.rs
 mod protocol;
 mod storage;
 mod sync;
@@ -12,4 +10,3 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Sistema-DSA Edge Agent iniciado correctamente.");
     Ok(())
 }
-EOF
