@@ -1,10 +1,10 @@
-# ESPECIFICACIÓN DE REQUISITOS DE SOFTWARE Y ARQUITECTURA DE SISTEMAS (SRS/SAD)
+# 1. ESPECIFICACIÓN DE REQUISITOS DE SOFTWARE Y ARQUITECTURA DE SISTEMAS (SRS/SAD)
 
-## SISTEMA DE ADJUDICACIÓN DE COMPRAS POR FONDO REVOLVENTE (SISTEMA-DSA)
+## 1.1 SISTEMA DE ADJUDICACIÓN DE COMPRAS POR FONDO REVOLVENTE (SISTEMA-DSA)
 
 ---
 
-### METADATOS DEL DOCUMENTO
+### 1.1.1 METADATOS DEL DOCUMENTO
 
 - **Código de Proyecto:** HCG-DSA-2026
 - **Fecha de Emisión:** 2026-05-27
@@ -16,7 +16,7 @@
 
 ---
 
-### RESUMEN EJECUTIVO Y METODOLOGÍA
+### 1.1.2 RESUMEN EJECUTIVO Y METODOLOGÍA
 
 Este documento constituye la especificación de requisitos formal y la descripción de arquitectura de software para el **Sistema-DSA**, una plataforma híbrida diseñada para el Hospital Civil de Guadalajara (HCG) que automatiza, valida y audita el proceso de adjudicación de compras a través del esquema de fondo revolvente.
 
@@ -31,6 +31,6 @@ El diseño sigue una metodología orientada a microservicios e integraciones hí
 
 ---
 
-## CONVENCIÓN DE NOMENCLATURA
+## 1.2 CONVENCIÓN DE NOMENCLATURA
 
 **DECLARACIÓN:** A partir de esta declaración, **todas las entidades, propiedades, columnas de BigQuery, campos de SQLite y miembros de structs Rust** adoptan `snake_case` como convención universal. Los identificadores de módulos (`[ID-XXX]`) y los nombres de componentes conservan PascalCase por convención de arquitectura de software. Las enumeraciones en Rust conservan PascalCase por idioma (`EstatusTramite`); en SQL/JSON se serializan como `UPPER_SNAKE_CASE`.
