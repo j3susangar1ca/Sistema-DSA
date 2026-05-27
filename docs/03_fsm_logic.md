@@ -1,8 +1,10 @@
-### [EXP-001] MÓDULO: EXPEDITION_STATE_MACHINE
+# 4. MÓDULOS DE LÓGICA Y NEGOCIO
+
+## 4.1 [EXP-001] MÓDULO: EXPEDITION_STATE_MACHINE
 
 **ESTADO:** PATCH_REVISION — Definición de matriz extendida FSM y componentes validadores institucionales de control.
 
-#### H4.1. REQUERIMIENTOS FUNCIONALES
+### 4.1.1 REQUERIMIENTOS FUNCIONALES
 
 - **[ID-REQ-EXP-01·P3] MilestonePhaseFSMTransitions:**
   - **Desc:** Incorporar nuevos estados de validación institucional post-adjudicación y entrega física al ciclo de vida del expediente.
@@ -37,7 +39,7 @@
 
   - **Post-Condition:** `Expedition.status` actualizado según transiciones. Los eventos deprecados son rechazados.
 
-#### EXP-001 H4.1.1 — Matriz de Transiciones Extendida con Componente Validador
+#### 4.1.1.1 — Matriz de Transiciones Extendida con Componente Validador
 
 La tabla FSM existente documenta los estados y transiciones. La siguiente matriz extendida añade el **componente validador responsable** y la **acción del sistema** para cada transición, proporcionando la especificación completa de implementación.
 
@@ -118,7 +120,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 - **[ID-REQ-EXP-10] MilestonePopulationValidation:**
   - **Desc:** Validar que las celdas del ledger `FondoRevolventeLedger` de los Bloques 3, 4 y 5 se pueblen únicamente bajo los estados del ciclo de vida autorizados, previniendo incoherencias transaccionales.
 
-#### H4.2. PERSISTENCIA Y DATA MODEL
+### 4.1.2 PERSISTENCIA Y DATA MODEL
 
 - **ENTITY:** `Expedition`
   - **Properties:** `{id: UUID, folio_code: String, status: ExpeditionStatusEnum, created_by: String, created_at: ISO8601, updated_at: ISO8601}`
@@ -138,7 +140,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 
 - **ENUM:** `DeadlineStatusEnum` = `[DEADLINE_OK, DEADLINE_WARNING, DEADLINE_EXPIRED]`
 
-#### H4.3. CONTRACTS & INTERFACES
+### 4.1.3 CONTRACTS & INTERFACES
 
 - **COMPONENT:** `FSMEngine` | **TRIGGER:** Any domain event
   - **DATA_CONTRACT (Input):** `{expedition_id: UUID, current_status: ExpeditionStatusEnum, triggering_event: EventTypeEnum, operator_email: String, payload: JSON?}`
@@ -150,11 +152,11 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 
 ---
 
-### [CAT-001] MÓDULO: CATALOG_CACHE_SERVICE
+## 4.2 [CAT-001] MÓDULO: CATALOG_CACHE_SERVICE
 
 **ESTADO:** PATCH_REVISION — Queries BigQuery en Apps Script actualizadas para consumir de las tablas reales dimensionales del Data Warehouse.
 
-#### H4.1. REQUERIMIENTOS FUNCIONALES
+### 4.2.1 REQUERIMIENTOS FUNCIONALES
 
 - **[ID-REQ-CAT-01·P] BigQueryCatalogWarmup:**
   - **Desc:** Carga del catálogo analítico institucional y del historial de compras directo desde BigQuery a `CacheService` al inicio de la sesión, consumiendo el Data Warehouse dimensional de `[DW-001]`.
@@ -205,7 +207,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 - **[ID-REQ-CAT-03] HistoricalSupplierSuggestion:**
   - **Desc:** Sugerir proveedores cruzando insumos con el historial de recepciones en DWH para renderizarDropdown en UI.
 
-#### H4.2. PERSISTENCIA Y DATA MODEL
+### 4.2.2 PERSISTENCIA Y DATA MODEL
 
 - **ENTITY:** `CatalogItem`
   - **Properties:** `{code: String(10), description: String, category: String, is_active: Boolean, unit_of_measure: String}`
@@ -214,7 +216,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 
 - **ENTITY:** `PurchaseHistory` → **DEPRECATED** (subsumida por las consultas directas a hechos `fact_recepciones_historicas` y `fact_pedidos_historicos` en `[DW-001]`).
 
-#### H4.3. CONTRACTS & INTERFACES
+### 4.2.3 CONTRACTS & INTERFACES
 
 - **COMPONENT:** `BigQueryClient` | **TRIGGER:** Cache miss
   - **DATA_CONTRACT (Input):** `{project_id: String, query: String, parameters: Array<JSON>}`
@@ -244,11 +246,11 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 
 ---
 
-### [MAIL-001] MÓDULO: ASYNC_EMAIL_INTERCEPTION
+## 4.3 [MAIL-001] MÓDULO: ASYNC_EMAIL_INTERCEPTION
 
 **ESTADO:** UNCHANGED
 
-#### H4.1. REQUERIMIENTOS FUNCIONALES
+### 4.3.1 REQUERIMIENTOS FUNCIONALES
 
 - **[ID-REQ-MAIL-01] TrackingIdInjection:**
   - **Desc:** Generar e inyectar en metadatos el identificador `tracking_token` criptográfico y asunto con patrón de folio.
@@ -266,7 +268,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 - **[ID-REQ-MAIL-05] SilentUINotification:**
   - **Desc:** Almacenar fila de actualización visual en Sheets con `is_read = false`.
 
-#### H4.2. PERSISTENCIA Y DATA MODEL
+### 4.3.2 PERSISTENCIA Y DATA MODEL
 
 - **ENTITY:** `EmailTracking`
   - **Properties:** `{id: UUID, expedition_id: UUID, tracking_token: String(16), subject: String, recipient_email: String, sent_at: ISO8601, responded_at: ISO8601, response_pdf_drive_id: String, parsed_decision: EmailDecisionEnum, status: EmailStatusEnum}`
@@ -279,7 +281,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 - **ENUM:** `EmailStatusEnum` = `[SENT, AWAITING_RESPONSE, RESPONSE_RECEIVED, PARSED, TIMED_OUT]`
 - **ENUM:** `EmailDecisionEnum` = `[APPROVED, DENIED, MANUAL_REVIEW_REQUIRED]`
 
-#### H4.3. CONTRACTS & INTERFACES
+### 4.3.3 CONTRACTS & INTERFACES
 
 - **COMPONENT:** `EmailDispatcher` | **TRIGGER:** FSM transition to `CATALOG_CHECKED`
   - **DATA_CONTRACT (Input):** `{expedition_id: UUID, folio_code: String, item_code: String, item_description: String, recipient_email: String, body_template: String}`
@@ -291,11 +293,11 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 
 ---
 
-### [ETL-001] MÓDULO: LEGACY_CSV_INGESTION_PIPELINE
+## 4.4 [ETL-001] MÓDULO: LEGACY_CSV_INGESTION_PIPELINE
 
 **ESTADO:** PATCH_REVISION — Column mapping real desde headers de xfarma para compras (13 cols) y pedidos (18 cols). Date anomaly detection y exclusión de RFCs nulos. LPAD de insumos.
 
-#### H4.1. REQUERIMIENTOS FUNCIONALES
+### 4.4.1 REQUERIMIENTOS FUNCIONALES
 
 - **[ID-REQ-ETL-01] FilesystemEventCapture:**
   - **Desc:** Watcher de filesystem (`notify`) para encolar la aparición de nuevos archivos CSV legacy.
@@ -330,7 +332,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 - **[ID-REQ-ETL-09] DualFileDetection:**
   - **Desc:** Watcher bifurcado que identifica de forma separada `compras_limpio.csv` vs `pedidos.csv` y detona pipelines con column mappings específicos independientes.
 
-#### H4.2. PERSISTENCIA Y DATA MODEL
+### 4.4.2 PERSISTENCIA Y DATA MODEL
 
 - **ENTITY:** `IngestionJob`
   - **Properties:** `{id: UUID, source_file_path: String, total_rows: Int64, processed_rows: Int64, error_rows: Int64, status: IngestionJobStatusEnum, started_at: ISO8601, completed_at: ISO8601?, source_file_type: SourceFileTypeEnum, rows_skipped_null_rfc: Int64?, columns_excluded: Int32?, anomalies_detected: Int64}`
@@ -341,7 +343,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 - **ENUM:** `SourceFileTypeEnum` = `[COMPRAS_LIMPIO, PEDIDOS, COMPRAS_RAW, FONDO_REVOLVENTE_LEDGER]`
 - **ENUM:** `IngestionJobStatusEnum` = `[QUEUED, PARSING, INSERTING, UPLOADING_BQ, COMPLETED, FAILED]`
 
-#### COLUMN MAPPING TABLE — `compras_limpio.csv` → `fact_recepciones_historicas`
+#### 4.4.2.1 COLUMN MAPPING TABLE — `compras_limpio.csv` → `fact_recepciones_historicas`
 
 | Columna CSV        | Tipo CSV     | Campo Destino         | Tipo BQ    | Transformación                                       |
 | ------------------ | ------------ | --------------------- | ---------- | ---------------------------------------------------- |
@@ -359,7 +361,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 | `proveedor_nombre` | STRING       | _(→ dim_proveedores)_ | —          | Join para enriquecer dimensión                       |
 | `almacen_deno`     | STRING       | `almacen_destino`     | STRING     | `TRIM()`                                             |
 
-#### COLUMN MAPPING TABLE — `pedidos.csv` → `fact_pedidos_historicos`
+#### 4.4.2.2 COLUMN MAPPING TABLE — `pedidos.csv` → `fact_pedidos_historicos`
 
 | Columna CSV       | Tipo CSV     | Campo Destino            | Tipo BQ    | Transformación                                       |
 | ----------------- | ------------ | ------------------------ | ---------- | ---------------------------------------------------- |
@@ -382,7 +384,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 | `familia`         | —            | **EXCLUIDA**             | —          | 100% nula                                            |
 | `subfamilia`      | —            | **EXCLUIDA**             | —          | 100% nula                                            |
 
-#### H4.3. CONTRACTS & INTERFACES
+### 4.4.3 CONTRACTS & INTERFACES
 
 - **COMPONENT:** `CSVParserEngine` | **TRIGGER:** Ingestion job starting
   - **DATA_CONTRACT (Input):**
@@ -419,11 +421,11 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 
 ---
 
-### [PROXY-001] MÓDULO: INTRANET_SCRAPING_PROXY
+## 4.5 [PROXY-001] MÓDULO: INTRANET_SCRAPING_PROXY
 
 **ESTADO:** UNCHANGED
 
-#### H4.1. REQUERIMIENTOS FUNCIONALES
+### 4.5.1 REQUERIMIENTOS FUNCIONALES
 
 - **[ID-REQ-PROXY-01] ReverseSignalChannelSetup:**
   - **Desc:** Polling periódico asíncrono desde el Rust Agent sobre la tabla control sin puertos entrantes.
@@ -438,7 +440,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 - **[ID-REQ-PROXY-04] ResponseChannelWriteback:**
   - **Desc:** Guardado de la respuesta inyectando estatus en `contract_status` y snapshot en `raw_html_snapshot`.
 
-#### H4.2. PERSISTENCIA Y DATA MODEL
+### 4.5.2 PERSISTENCIA Y DATA MODEL
 
 - **ENTITY:** `ScrapingRequest`
   - **Properties:** `{id: UUID, expedition_id: UUID, item_code: String(10), status: ScrapingStatusEnum, contract_status: ContractStatusEnum?, raw_html_snapshot: String?, retry_count: Int32, error_message: String?, requested_at: ISO8601, responded_at: ISO8601?}`
@@ -447,7 +449,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 - **ENUM:** `ScrapingStatusEnum` = `[PENDING, IN_PROGRESS, COMPLETED, FAILED, RETRYING]`
 - **ENUM:** `ContractStatusEnum` = `[VIGENTE, EN_PROCESO, SIN_CONTRATO, DESCONOCIDO]`
 
-#### H4.3. CONTRACTS & INTERFACES
+### 4.5.3 CONTRACTS & INTERFACES
 
 - **COMPONENT:** `ScrapingRequestWriter` | **TRIGGER:** FSM transition in Apps Script
   - **DATA_CONTRACT (Input):** `{expedition_id: UUID, item_code: String(10)}`
@@ -455,11 +457,11 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 
 ---
 
-### [AUTH-001] MÓDULO: ZERO_PASSWORD_ACCESS_CONTROL
+## 4.6 [AUTH-001] MÓDULO: ZERO_PASSWORD_ACCESS_CONTROL
 
 **ESTADO:** PATCH_REVISION — Integración de logs de acceso asíncronos y Access Gate federado.
 
-#### H4.1. REQUERIMIENTOS FUNCIONALES
+### 4.6.1 REQUERIMIENTOS FUNCIONALES
 
 - **[ID-REQ-AUTH-01] FederatedIdentityInterception:**
   - **Desc:** Capturar de forma transparente `Session.getActiveUser().getEmail()` inyectando `operator_email`.
@@ -519,7 +521,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 
   - **Post-Condition:** `AccessAuditLog` poblado en cada invocación.
 
-#### H4.2. PERSISTENCIA Y DATA MODEL
+### 4.6.2 PERSISTENCIA Y DATA MODEL
 
 - **ENTITY:** `AccessControlEntry`
   - **Properties:** `{email: String, full_name: String, role: UserRoleEnum, is_active: Boolean, added_at: ISO8601}`
@@ -534,11 +536,11 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 
 ---
 
-### [QUOT-001] MÓDULO: QUOTATION_DOCUMENT_FACTORY
+## 4.7 [QUOT-001] MÓDULO: QUOTATION_DOCUMENT_FACTORY
 
 **ESTADO:** PATCH_REVISION — Definición de plantilla legal obligatoria de correo y despacho dinámico de cotizaciones.
 
-#### H4.1. REQUERIMIENTOS FUNCIONALES
+### 4.7.1 REQUERIMIENTOS FUNCIONALES
 
 - **[ID-REQ-QUOT-01·P] BifurcatedSupplierResolution:**
   - **Desc:** Resolver proveedores mediante consulta analítica e invocar fallback a `[STAT-001]` de CONAC si no se alcanza la terna mínima.
@@ -596,7 +598,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 - **[ID-REQ-QUOT-07] QuotationDeadlineTrigger:**
   - **Desc:** Trigger temporal de vencimiento de cotización al cabo de 5 días hábiles.
 
-#### H4.2. PERSISTENCIA Y DATA MODEL
+### 4.7.2 PERSISTENCIA Y DATA MODEL
 
 - **ENTITY:** `QuotationAssignment`
   - **Properties:** `{id: UUID, expedition_id: UUID, assigned_at: ISO8601, assigned_by: String, supplier_count: Int32, status: AssignmentStatusEnum, resolution_mode: ResolutionModeEnum, direct_supplier_count: Int32, affinity_supplier_count: Int32}`
@@ -611,7 +613,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 - **ENUM:** `AssignmentStatusEnum` = `[PENDING, ASSIGNED, DISPATCHED, PARTIALLY_RECEIVED, COMPLETED, EXPIRED]`
 - **ENUM:** `ResolutionModeEnum` = `[DIRECT, HYBRID]`
 
-#### H4.3. CONTRACTS & INTERFACES
+### 4.6.3 CONTRACTS & INTERFACES
 
 - **COMPONENT:** `SupplierAssigner`
   - **DATA_CONTRACT (Input):** `{expedition_id: UUID, item_code: String(10), partida_conac: String(4), min_suppliers: Int32, operator_email: String}`
@@ -643,11 +645,11 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 
 ---
 
-### [STAT-001] MÓDULO: SUPPLIER_AFFINITY_PROJECTION
+## 4.8 [STAT-001] MÓDULO: SUPPLIER_AFFINITY_PROJECTION
 
 **ESTADO:** PATCH_REVISION — SQL analítico reescrito para explotar el Data Warehouse dimensional de `[DW-001]` (`fact_pedidos_historicos` + `dim_proveedores`) con enriquecimiento de precios pagados reales desde `fact_recepciones_historicas`.
 
-#### H4.1. REQUERIMIENTOS FUNCIONALES
+### 4.8.1 REQUERIMIENTOS FUNCIONALES
 
 - **[ID-REQ-STAT-01] CONACPartidaMapping:**
   - **Desc:** Mapear el código de bien a código de partida CONAC resolviendo contra las tablas de hechos de recepciones y pedidos en BQ de forma determinista.
@@ -690,12 +692,12 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
   - **Desc:** Enriquecer el listado cruzando con `fact_recepciones_historicas` para inyectar el último precio unitario real pagado en almacén para ese insumo/proveedor.
   - **Logic:** ROW_NUMBER partition desc por `fecha_sistema`.
 
-#### H4.2. PERSISTENCIA Y DATA MODEL
+### 4.8.2 PERSISTENCIA Y DATA MODEL
 
 - **ENTITY:** `SupplierAffinityScore`
   - **Properties:** `{id: UUID, expedition_id: UUID, supplier_rfc: String, supplier_razon_social: String, supplier_email: String, partida_conac: String(4), total_adjudicaciones: Int32, ultima_compra: ISO8601, affinity_index: Float64, calculated_at: ISO8601, ultimo_precio_real: Decimal128?, total_recepciones: Int64, ultima_recepcion: ISO8601?}`
 
-#### H4.3. CONTRACTS & INTERFACES
+### 4.7.3 CONTRACTS & INTERFACES
 
 - **COMPONENT:** `AffinityProjectionEngine`
   - **DATA_CONTRACT (Input):** `{projectId: String, itemCode: String, partidaConac: String(4), excludeRfcs: Array<String>}`
@@ -721,11 +723,11 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 
 ---
 
-### [INBOUND-001] MÓDULO: SUPPLIER_QUOTATION_INTERCEPTION
+## 4.9 [INBOUND-001] MÓDULO: SUPPLIER_QUOTATION_INTERCEPTION
 
 **ESTADO:** UNCHANGED
 
-#### H4.1. REQUERIMIENTOS FUNCIONALES
+### 4.9.1 REQUERIMIENTOS FUNCIONALES
 
 - **[ID-REQ-INBOUND-01] SupplierResponsePolling:**
   - **Desc:** Escaneo de correos no leídos en Gmail que coincidan con folio y provengan de un remitente al que se le solicitó cotización.
@@ -744,13 +746,13 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 - **[ID-REQ-INBOUND-05] AutomaticGeminiValidationTrigger:**
   - **Desc:** Invocar síncronamente validación normativa en modulo `COMP-001`.
 
-#### H4.2. PERSISTENCIA Y DATA MODEL
+### 4.9.2 PERSISTENCIA Y DATA MODEL
 
 - **ENTITY:** `QuotationResponse`
   - **Properties:** `{id: UUID, expedition_id: UUID, supplier_rfc: String, supplier_email: String, gmail_message_id: String, gmail_thread_id: String, subject: String, pdf_drive_id: String, pdf_file_name: String, received_at: ISO8601, processed_at: ISO8601, processed_by: String}`
   - **Constraints:** PK(`id`), UNIQUE(`gmail_message_id`), FK(`expedition_id` → `Expedition.id`)
 
-#### H4.3. CONTRACTS & INTERFACES
+### 4.8.3 CONTRACTS & INTERFACES
 
 - **COMPONENT:** `SupplierResponsePoller`
   - **DATA_CONTRACT (Input):** `{search_query: String, known_dispatched_suppliers: Map<String, Array<String>>}`
@@ -758,11 +760,11 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 
 ---
 
-### [COMP-001] MÓDULO: COMPARATIVE_MATRIX_ENGINE
+## 4.10 [COMP-001] MÓDULO: COMPARATIVE_MATRIX_ENGINE
 
 **ESTADO:** PATCH_REVISION — Normalización 3NF: `MatrixEntry` + `ComparativeMatrix` reemplazados por `EstudioMercadoMetadata` + `EstudioMercadoLineas`.
 
-#### H4.1. REQUERIMIENTOS FUNCIONALES
+### 4.10.1 REQUERIMIENTOS FUNCIONALES
 
 - **[ID-REQ-COMP-01] NormativeQuotationValidation:**
   - **Desc:** Analizar semánticamente mediante Gemini 1.5 Flash cada cotización recibida frente a la solicitud original. El motor valida la vigencia de precios ($\ge 30$ días naturales), método de pago y anexo técnico.
@@ -887,7 +889,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 - **[ID-REQ-COMP-07] RejectionAuditTrail:**
   - **Desc:** Auditar motivos de rechazo normativo en la bitácora de eventos del expediente.
 
-#### H4.2. PERSISTENCIA Y DATA MODEL
+### 4.10.2 PERSISTENCIA Y DATA MODEL
 
 - **ENTITY:** `EstudioMercadoMetadata`
   - **Properties:** `{folio_dsa: String, fecha_estudio: Date, area_solicitante: String, articulo_ley_fundamento: String, is_locked: Boolean, exported_pdf_drive_id: String?, exported_xlsx_drive_id: String?, created_at: ISO8601, updated_at: ISO8601}`
@@ -903,7 +905,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 
 - **ENUM:** `ValidationStatusEnum` = `[VALIDADO, DEFICIENTE_NORMATIVAMENTE, PENDING_VALIDATION]`
 
-#### H4.3. CONTRACTS & INTERFACES
+### 4.9.3 CONTRACTS & INTERFACES
 
 - **COMPONENT:** `NormativeValidator` | **TRIGGER:** `QuotationResponse` persisted
   - **DATA_CONTRACT (Input):** `{expedition_id: UUID, pdf_drive_id: String, supplier_rfc: String, original_request: JSON}`
@@ -919,13 +921,13 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 
 ---
 
-### [DW-001] MÓDULO: HISTORICAL_DATA_WAREHOUSE
+## 4.11 [DW-001] MÓDULO: HISTORICAL_DATA_WAREHOUSE
 
 **ESTADO:** PATCH_REVISION — Especificación de esquemas dimensionales extendidos de alta volumetría.
 
 **Propósito:** Definir el modelo dimensional (esquema estrella) en Google BigQuery que consolidará los 355,980 registros históricos reales extraídos del sistema legacy xfarma/Dedalus del Hospital Civil de Guadalajara, siendo la **fuente de verdad analítica** consumida por los módulos STAT-001 y CAT-001.
 
-#### H4.1. REQUERIMIENTOS FUNCIONALES
+### 4.11.1 REQUERIMIENTOS FUNCIONALES
 
 - **[ID-REQ-DW-01] ProviderDimensionConstruction:**
   - **Desc:** Construir la dimensión `dim_proveedores` consolidando registros únicos desde `pedidos.csv` (fuente primaria, contiene RFC via `nif`) y cruzando con `compras_limpio.csv` (fuente secundaria, contiene `proveedor_pk` y `proveedor_nombre`) para asociar ID legacy con el RFC real.
@@ -958,7 +960,7 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
 - **[ID-REQ-DW-05] ParticionamientoYFreeTier:**
   - **Desc:** Garantizar almacenamiento total del DWH analítico <200 MB, permaneciendo bajo Always Free Tier de BigQuery.
 
-#### H4.2. PERSISTENCIA Y DATA MODEL
+### 4.11.2 PERSISTENCIA Y DATA MODEL
 
 - **ENTITY:** `DimProveedor`
   - **Properties (BigQuery DDL):**
@@ -1034,11 +1036,11 @@ La tabla FSM existente documenta los estados y transiciones. La siguiente matriz
     );
     ```
 
-#### DW-001 H4.2.1 — Esquemas de Datos de Infraestructura de Alta Volumetría
+#### 4.11.2.1 — Esquemas de Datos de Infraestructura de Alta Volumetría
 
 Para dar soporte a la ingesta masiva del histórico institucional (~355,980 registros consolidados de xfarma y Dedalus), se implementa un modelo analítico columnar particionado en Google BigQuery (Cloud) acoplado a un motor in-memory transaccional en el Edge (SQLite via Rust).
 
-##### Tabla A: `fact_recepciones_historicas` (Carga masiva desde `compras_limpio.csv`)
+##### 4.11.2.1.1 Tabla A: `fact_recepciones_historicas` (Carga masiva desde `compras_limpio.csv`)
 
 - **Engine:** Google BigQuery (Columnar Store)
 - **Partitioning:** `PARTITION BY fecha_sistema` (Mensual)
@@ -1068,7 +1070,7 @@ Para dar soporte a la ingesta masiva del histórico institucional (~355,980 regi
 - `precio_sin_iva` > `importe_total` → registro descartado + anomaly log (tipo: `NUMERIC_OVERFLOW`).
 - `cantidad_ingresada` < 0 → registro descartado + anomaly log.
 
-##### Tabla B: `fact_pedidos_historicos` (Carga masiva desde `pedidos.csv`)
+##### 4.11.2.1.2 Tabla B: `fact_pedidos_historicos` (Carga masiva desde `pedidos.csv`)
 
 - **Engine:** Google BigQuery (Columnar Store)
 - **Partitioning:** `PARTITION BY fecha_pedido` (Mensual)
@@ -1122,7 +1124,7 @@ Para dar soporte a la ingesta masiva del histórico institucional (~355,980 regi
 - Consolidación automática al contar `COUNT(*) WHERE estatus_validacion = 'VALIDADO' >= 3`.
 - Una vez consolidada (`is_locked = true`), ninguna escritura programática es permitida en las celdas de datos.
 
-#### H4.3. CONTRACTS & INTERFACES
+### 4.10.3 CONTRACTS & INTERFACES
 
 - **COMPONENT:** `RecepcionesLoadJob` | **TRIGGER:** file compras_limpio.csv created
   - **DATA_CONTRACT (Input):** `{file_path: String, target_table: String}`

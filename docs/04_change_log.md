@@ -1,6 +1,6 @@
-## 5. PARTE C — RESUMEN CONSOLIDADO DE CAMBIOS
+# 5. PARTE C — RESUMEN CONSOLIDADO DE CAMBIOS
 
-### Estado de Módulos Post-Integración (v5.1)
+## 5.1 Estado de Módulos Post-Integración (v5.1)
 
 | #   | ID           | Estado v5.0    | Estado v5.1        | Delta                    |
 | --- | ------------ | -------------- | ------------------ | ------------------------ |
