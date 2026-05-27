@@ -1,3 +1,7 @@
+# ==============================================================================
+# Sistema-DSA: Git Ignore Configuration (ISO Standard Compliance)
+# ==============================================================================
+
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -7,25 +11,48 @@
 ehthumbs.db
 Thumbs.db
 
-# IDE / Editor files
+# IDE & Editor configurations
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
+.project
+.settings/
+.classpath
 
-# Log files
+# Log & Diagnostic files
 *.log
+*.err
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # Temporary files
 tmp/
 temp/
+*.tmp
+*.bak
 
-# Rust (Edge Agent)
-target/
+# Rust compilation artifacts
+/target/
 **/*.rs.bk
+Cargo.lock
 
-# SQLite Databases & WAL
+# Python & virtual environment artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+ENV/
+env/
+dist/
+build/
+*.egg-info/
+
+# SQLite Databases & WAL (Edge Persistence Buffer)
 *.db
 *.db-journal
 *.db-wal
@@ -33,43 +60,20 @@ target/
 *.sqlite
 *.sqlite3
 
-# Excel & Data Files
+# Microsoft Office backup / locking files & raw data
 ~$*.xlsx
-*.xlsx
-*.xls
+~$*.docx
+~$*.pptx
 *.csv
-data/
+/data/
 
-# Credentials & Environment
+# Credentials, keys & environment configurations
 .env
 .env.*
 *.pem
+*.key
+*.crt
 *secret*.json
 *credentials*.json
 *key*.json
-
-
-# Added by cargo
-
-/target
-
-
-# Added by cargo
-#
-# already existing elements were commented out
-
-#/target
-
-
-# Added by cargo
-#
-# already existing elements were commented out
-
-#/target
-
-
-# Added by cargo
-#
-# already existing elements were commented out
-
-#/target
+oauth2.txt
