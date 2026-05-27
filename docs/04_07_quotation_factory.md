@@ -1,4 +1,4 @@
-# 3.7. [QUOT-001] MÓDULO: QUOTATION_DOCUMENT_FACTORY
+# 4.7. [QUOT-001] MÓDULO: QUOTATION_DOCUMENT_FACTORY
 
 **ESTADO:** PATCH_REVISION — Definición de plantilla legal obligatoria de correo y despacho dinámico de cotizaciones.
 

@@ -1,4 +1,4 @@
-# 4. PARTE C — RESUMEN CONSOLIDADO DE CAMBIOS
+# 6. PARTE C — RESUMEN CONSOLIDADO DE CAMBIOS
 
 ## 4.1 Estado de Módulos Post-Integración (v5.1)
 

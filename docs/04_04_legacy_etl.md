@@ -1,4 +1,4 @@
-# 3.4. [ETL-001] MÓDULO: LEGACY_CSV_INGESTION_PIPELINE
+# 4.4. [ETL-001] MÓDULO: LEGACY_CSV_INGESTION_PIPELINE
 
 **ESTADO:** PATCH_REVISION — Column mapping real desde headers de xfarma para compras (13 cols) y pedidos (18 cols). Date anomaly detection y exclusión de RFCs nulos. LPAD de insumos.
 

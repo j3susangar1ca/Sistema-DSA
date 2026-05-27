@@ -1,4 +1,4 @@
-# 3.1. [EXP-001] MÓDULO: EXPEDITION_STATE_MACHINE
+# 4.1. [EXP-001] MÓDULO: EXPEDITION_STATE_MACHINE
 
 **ESTADO:** PATCH_REVISION — Definición de matriz extendida FSM y componentes validadores institucionales de control.
 

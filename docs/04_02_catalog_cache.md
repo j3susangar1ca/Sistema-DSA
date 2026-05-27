@@ -1,4 +1,4 @@
-# 3.2. [CAT-001] MÓDULO: CATALOG_CACHE_SERVICE
+# 4.2. [CAT-001] MÓDULO: CATALOG_CACHE_SERVICE
 
 **ESTADO:** PATCH_REVISION — Queries BigQuery en Apps Script actualizadas para consumir de las tablas reales dimensionales del Data Warehouse.
 

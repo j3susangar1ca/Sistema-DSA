@@ -1,4 +1,4 @@
-# 3.3. [MAIL-001] / [INBOUND-001] MÓDULOS DE AUTOMATIZACIÓN E INTERCEPCIÓN DE EMAIL
+# 4.3. [MAIL-001] / [INBOUND-001] MÓDULOS DE AUTOMATIZACIÓN E INTERCEPCIÓN DE EMAIL
 
 Este archivo unifica las especificaciones para el despacho y seguimiento de correos salientes (`MAIL-001`) y la intercepción y procesamiento de cotizaciones entrantes de proveedores (`INBOUND-001`).
 

@@ -1,4 +1,4 @@
-# 3.9. [COMP-001] MÓDULO: COMPARATIVE_MATRIX_ENGINE
+# 4.9. [COMP-001] MÓDULO: COMPARATIVE_MATRIX_ENGINE
 
 **ESTADO:** PATCH_REVISION — Normalización 3NF: `MatrixEntry` + `ComparativeMatrix` reemplazados por `EstudioMercadoMetadata` + `EstudioMercadoLineas`.
 

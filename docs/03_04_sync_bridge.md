@@ -1,4 +1,4 @@
-# 2.5. [SYNC-001] MÓDULO: EDGE_SYNCHRONIZATION_BRIDGE
+# 3.4. [SYNC-001] MÓDULO: EDGE_SYNCHRONIZATION_BRIDGE
 
 **ESTADO:** PATCH_REVISION — Excel local muta de Data Mart de solo lectura a **Transactive Store** bidireccional de lectura/escritura actualizado por clave compuesta `(folio_dsa, codigo)`.
 

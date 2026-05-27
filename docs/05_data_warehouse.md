@@ -1,4 +1,4 @@
-# 3.10. [DW-001] MÓDULO: HISTORICAL_DATA_WAREHOUSE
+# 5. [DW-001] MÓDULO: HISTORICAL_DATA_WAREHOUSE
 
 **ESTADO:** PATCH_REVISION — Especificación de esquemas dimensionales extendidos de alta volumetría.
 

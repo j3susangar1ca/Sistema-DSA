@@ -1,4 +1,4 @@
-# 3.8. [STAT-001] MÓDULO: SUPPLIER_AFFINITY_PROJECTION
+# 4.8. [STAT-001] MÓDULO: SUPPLIER_AFFINITY_PROJECTION
 
 **ESTADO:** PATCH_REVISION — SQL analítico reescrito para explotar el Data Warehouse dimensional de `[DW-001]` (`fact_pedidos_historicos` + `dim_proveedores`) con enriquecimiento de precios pagados reales desde `fact_recepciones_historicas`.
 

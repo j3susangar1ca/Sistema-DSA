@@ -1,4 +1,4 @@
-# 3.6. [AUTH-001] MÓDULO: ZERO_PASSWORD_ACCESS_CONTROL
+# 4.6. [AUTH-001] MÓDULO: ZERO_PASSWORD_ACCESS_CONTROL
 
 **ESTADO:** PATCH_REVISION — Integración de logs de acceso asíncronos y Access Gate federado.
 

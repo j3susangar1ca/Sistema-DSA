@@ -1,4 +1,4 @@
-# 2.1. PROTOCOLO DE INTEROPERABILIDAD CLOUD-EDGE
+# 2. PROTOCOLO DE INTEROPERABILIDAD CLOUD-EDGE
 
 Para cumplir con la directriz de **Cero Puertos Entrantes Abiertos (Zero Inbound Ports)** — [RNF-004] — en la red del hospital, la comunicación entre la infraestructura Serverless de Google (Cloud) y el entorno físico Windows 11 (Edge) se implementa mediante un patrón de **Cola de Comandos Inversa (Asynchronous Command Queue)**.
 
