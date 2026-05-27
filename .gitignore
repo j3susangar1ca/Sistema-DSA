@@ -47,3 +47,8 @@ data/
 *secret*.json
 *credentials*.json
 *key*.json
+
+
+# Added by cargo
+
+/target
